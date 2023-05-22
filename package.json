@@ -1,0 +1,30 @@
+{
+  "name": "device-samples",
+  "version": "1.0.0",
+  "description": "Sample code for connecting devices to the LifeOmic Platform",
+  "author": "LifeOmic",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "provision": "ts-node ./samples/provision.ts",
+    "uploadObservation": "ts-node ./samples/uploadObservation.ts",
+    "uploadFile": "ts-node ./samples/uploadFile.ts"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "aws-iot-device-sdk-v2": "^1.11.0",
+    "axios": "^1.4.0",
+    "mime-types": "^2.1.35",
+    "ts-node": "^10.9.1",
+    "uuid": "^9.0.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/mime-types": "^2.1.1",
+    "@types/node": "^18.16.1",
+    "@types/uuid": "^9.0.1",
+    "typescript": "^5.0.4"
+  }
+}
