@@ -6,6 +6,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "firmwareUpdate": "ts-node ./samples/firmwareUpdate.ts",
     "provision": "ts-node ./samples/provision.ts",
     "uploadObservation": "ts-node ./samples/uploadObservation.ts",
     "uploadFile": "ts-node ./samples/uploadFile.ts"
