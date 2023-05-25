@@ -1,0 +1,4 @@
+key,type,encoding,value
+certs,namespace,,
+claim_cert,file,string,main/certs/claim-certificate.pem
+private_key,file,string,main/certs/private-key.key
