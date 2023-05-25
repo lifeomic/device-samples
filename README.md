@@ -143,3 +143,113 @@ The response payload has the format:
   "uploadUrl": "<URL_to_PUT_file_to>"
 }
 ```
+
+## Firmware Update
+
+Doing a firmware update is a multi step process that involves communicating on multiple MQTT topics and downloading the file over HTTP. The steps are:
+
+1. Checking if a job is assigned to the device
+2. Getting the details of a job assigned to the device
+3. Marking the job as in progress
+4. Downloading the update file over HTTP
+5. Applying the downloaded file as an update
+6. Marking the job as finished
+
+During steps 4. and 5. you can optionally set the progress of the device update. Checkout `samples/firmwareUpdates.ts` to see an example of these steps being done. You can run the script with:
+
+```bash
+yarn firmwareUpdate \
+  --deviceName=<device_name> \
+```
+
+### Checking Assigned Jobs
+
+Write Topic: `$aws/things/${deviceName}/jobs/get`
+Success response topic: `$aws/things/${deviceName}/jobs/get/accepted`
+Failure response topic: `$aws/things/${deviceName}/jobs/get/rejected`
+
+Success response:
+
+```typescript
+{
+  timestamp: number;
+  inProgressJobs: {
+    jobId: string;
+    queuedAt: number;
+    lastUpdatedAt: number;
+    startedAt: number;
+    executionNumber: number;
+    versionNumber: number;
+  }
+  [];
+  queuedJobs: {
+    jobId: string;
+    queuedAt: number;
+    lastUpdatedAt: number;
+    executionNumber: number;
+    versionNumber: number;
+  }
+  [];
+}
+```
+
+### Getting Job Details
+
+Write topic: `$aws/things/${deviceName}/jobs/${jobId}/get`
+Success response topic: `$aws/things/${deviceName}/jobs/${jobId}/get/accepted`
+Failure response topic: `$aws/things/${deviceName}/jobs/${jobId}/get/rejected`
+
+Success response:
+
+```typescript
+{
+  timestamp: number;
+  execution: {
+    jobId: string;
+    status:
+      | "QUEUED"
+      | "IN_PROGRESS"
+      | "FAILED"
+      | "SUCCEEDED"
+      | "CANCELED"
+      | "TIMED_OUT"
+      | "REJECTED"
+      | "REMOVED";
+    queuedAt: number;
+    lastUpdatedAt: number;
+    versionNumber: number;
+    executionNumber: number;
+    jobDocument: {
+      operation: "firmware_update";
+      deploymentId: string;
+      firmwareId: string;
+      firmwareUrl: string; // Does not last forever, download immediately
+    };
+  };
+};
+```
+
+### Set Job Status
+
+Write topic: `$aws/things/${deviceName}/jobs/${jobId}/update`
+Success response topic: `$aws/things/${deviceName}/jobs/${jobId}/update/accepted`
+Failure response topic: `$aws/things/${deviceName}/jobs/${jobId}/update/rejected`
+
+Write topic payload:
+
+```typescript
+{
+  status: "IN_PROGRESS" | "FAILED" | "SUCCEEDED" | "REJECTED";
+  statusDetails?: {
+    percentProgress: number
+  };
+}
+```
+
+Success response:
+
+```typescript
+{
+  timestamp: number;
+}
+```
