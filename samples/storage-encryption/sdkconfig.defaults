@@ -1,0 +1,20 @@
+# Tells the build we have a custom partition table
+CONFIG_PARTITION_TABLE_CUSTOM=y
+
+# Tells the build where our custom partition table is defined
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="custom_partitions.csv"
+CONFIG_PARTITION_TABLE_FILENAME="custom_partitions.csv"
+
+# Specifies where the partition table is stored. The default location
+# is 0x8000, but when Flash Encryption is enabled, the size of the
+# Bootloader increases, which requires us to move this to a higher offset.
+# The size of the binary also has an impact on the end value of this
+# location, so it may change depending on the size of the application.
+CONFIG_PARTITION_TABLE_OFFSET=0x10000
+
+# Tells the build that the device will use Flash Encrytpion and
+# NVS Encryption.
+# These values are the key to making things work.
+CONFIG_NVS_ENCRYPTION=y
+CONFIG_SECURE_FLASH_ENC_ENABLED=y
+CONFIG_SECURE_FLASH_ENCRYPTION_MODE_DEVELOPMENT=y
