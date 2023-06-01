@@ -42,17 +42,18 @@ the VSCode plugin, the path should look like
 
 # Guide
 
-This repo includes an example binary of the claim certificate and the private
-key, as well as the encryption keys that were used to encrypt the
-binary. These can be used to test out the steps for provisioning them to the
-device  in a secure manner. The process for generating these binaries is laid
-out in the Medium article linked above. For real claim certificates, private
-keys, and encryption keys, the generated binaries should NOT be committed to
-source control.
+This repo shows how to fully encrypte Non-Volatile Storage (NVS) on any ESP32
+chip. The file at `main/nvs.csv` defines an NVS namespace called `certs` and defines two key/value pairs that represent a claim certificate and a
+private key. This file is used to generate the encrypted binary that will be
+flashed to the NVS partition of the device. The file definition assumes the
+following:
+1. A claim certificate will be stored under `main/certs/claim_cert.pem`.
+2. A private key will be stored under `main/certs/private.key`.\
+3. Both of these files are ignored from version control. They are provided
+by the user when following this guide.
 
-The following steps will just show how to get the encrypted binary and the
-encryption keys into the device, as well as how to enable flash encryption and
-NVS encryption of the device to tie it all together.
+The following steps will show how to generate the encrypted NVS binary data and how to get it into the device. It will also show how to enable flash encryption and NVS encryption on the device so it is able to securely read/write data
+to/from the NVS partition.
 
 ## Steps
 
@@ -66,9 +67,9 @@ will be needed in the next steps.
 will build the project for the first time and generate a `.bin` file for the
 partition table under the `build/partition_table` directory.
 
-4. Inspect the partition table of the build by running the following:
+4. Inspect the partition table of the build by running:
 
-`$IDF_PATH/components/partition_table/gen_esp32part.py build/partition_table/partition-table.bin`
+`./scripts/inspect-partitions.sh`
 
 The output will look like the following:
 
@@ -83,37 +84,26 @@ factory,app,factory,0x20000,1M,
 nvs_key,data,nvs_keys,0x120000,4K,encrypted
 ```
 
-Remember the `Offset` for the `nvs` and `nvs_key`, you'll need them for the
-next steps.
+Export the `Offset` for the `nvs` and `nvs_key` to shell variables in a
+terminal:
+- `export NVS_OFFSET=0x11000`
+- `export NVS_KEYS_OFFSET=0x120000`
 
-5. Flash the encrypted binary of the claim certificate and the private key to
-the `nvs` partition of the device by running the following:
+It's important to correctly define these variables as they are needed by
+the scripts that will be run in the following steps.
 
-```
-python $IDF_PATH/components/esptool_py/esptool/esptool.py \
-    -p $PORT \
-    --before default_reset \
-    --after no_reset \
-    write_flash $OFFSET encrypted_nvs.bin
-```
+5. Generate the NVS data that will be flashed into the device:
 
-Where `$OFFSET` corresponds to the value obtained from the previous step at
-the `nvs` row. `$PORT` corresponds to the port where the device is connected to.
+`./scripts/generate-nvs-data.sh`
 
-6. Flash the encryption keys to the `nvs_key` partition of the device by running
-the following:
+This will output the following files:
+- `encrypted_nvs.bin`: the encrypted binary of the NVS data to be flashed into the NVS partition of the device.
+- `keys/nvs_keys.bin`: the plain text binary of the encryption keys used to
+encrypt the NVS data.
 
-```
-python $IDF_PATH/components/esptool_py/esptool/esptool.py \
-    -p $PORT \
-    --before default_reset \
-    --after no_reset \
-    write_flash --encrypt $OFFSET keys/nvs_keys.bin
-```
+6. Flash the two generated binaries into the device by running:
 
-Again, `$OFFSET` corresponds to the value obtained from the previous step at
-the `nvs_key` row. Notice the `--encrypt` option in `write_flash` this time.
-Including this option is crucial for encryption to work correctly.
+`./scripts/flash-nvs-data.sh`
 
 7. At this point, the data required for correctly provisioning the device has
 already been loaded into it. Now, the device needs to be flashed for the first
