@@ -43,12 +43,12 @@ the VSCode plugin, the path should look like
 # Guide
 
 This repo shows how to fully encrypte Non-Volatile Storage (NVS) on any ESP32
-chip. The file at `main/nvs.csv` defines an NVS namespace called `certs` and defines two key/value pairs that represent a claim certificate and a
+chip. The file at `main/nvs.csv` defines an NVS namespace called `secrets` and defines two key/value pairs that represent a claim certificate and a
 private key. This file is used to generate the encrypted binary that will be
 flashed to the NVS partition of the device. The file definition assumes the
 following:
-1. A claim certificate will be stored under `main/certs/claim_cert.pem`.
-2. A private key will be stored under `main/certs/private.key`.\
+1. A claim certificate will be stored under `main/secrets/claim_cert.pem`.
+2. A private key will be stored under `main/secrets/private.key`.\
 3. Both of these files are ignored from version control. They are provided
 by the user when following this guide.
 
@@ -78,16 +78,18 @@ Parsing binary partition input...
 Verifying table...
 # ESP-IDF Partition Table
 # Name, Type, SubType, Offset, Size, Flags
-nvs,data,nvs,0x11000,24K,
-storage,data,255,0x17000,4K,
-factory,app,factory,0x20000,1M,
-nvs_key,data,nvs_keys,0x120000,4K,encrypted
+nvs,data,nvs,0x9000,24K,
+otadata,data,ota,0xf000,8K,
+app0,app,ota_0,0x20000,1252K,
+app1,app,ota_1,0x160000,1252K,
+spiffs,data,spiffs,0x299000,1408K,
+nvs_key,data,nvs_keys,0x3f9000,4K,encrypted
 ```
 
 Export the `Offset` for the `nvs` and `nvs_key` to shell variables in a
 terminal:
-- `export NVS_OFFSET=0x11000`
-- `export NVS_KEYS_OFFSET=0x120000`
+- `export NVS_OFFSET=0x9000`
+- `export NVS_KEYS_OFFSET=0x3f9000`
 
 It's important to correctly define these variables as they are needed by
 the scripts that will be run in the following steps.
