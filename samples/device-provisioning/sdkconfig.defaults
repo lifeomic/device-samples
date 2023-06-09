@@ -1,0 +1,33 @@
+#
+# General config
+#
+CONFIG_AUTOSTART_ARDUINO=y
+CONFIG_FREERTOS_HZ=1000
+CONFIG_MBEDTLS_PSK_MODES=y
+CONFIG_MBEDTLS_KEY_EXCHANGE_PSK=y
+
+#
+# NVS Encryption config
+#
+CONFIG_NVS_ENCRYPTION=y
+CONFIG_SECURE_FLASH_ENC_ENABLED=y
+CONFIG_SECURE_FLASH_ENCRYPTION_MODE_DEVELOPMENT=y
+
+#
+# Custom Partition Table config
+#
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="custom_partitions.csv"
+CONFIG_PARTITION_TABLE_FILENAME="custom_partitions.csv"
+
+#
+# Serial flasher config
+#
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_ESPTOOLPY_FLASHSIZE="16MB"
+
+# The bootloader size increases when Flash Encryption is enabled. To avoid
+# having to modify our partition table offsets, we just disable bootloader
+# logging so the bootloader size does not overlap with where the first
+# partition starts (0x8000 by default).
+CONFIG_BOOTLOADER_LOG_LEVEL_NONE=y

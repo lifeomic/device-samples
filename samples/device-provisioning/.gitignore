@@ -4,4 +4,12 @@
 .vscode/launch.json
 .vscode/ipch
 
+secrets
+
 Config.h
+
+keys
+encrypted_nvs.bin
+
+sdkconfig.*
+!sdkconfig.defaults
