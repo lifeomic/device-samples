@@ -1,0 +1,6 @@
+key,type,encoding,value
+secrets,namespace,,
+cert,file,string,src/secrets/claim-cert.pem
+private_key,file,string,src/secrets/private.key
+wifi_ssid,file,string,src/secrets/wifi-ssid.txt
+wifi_password,file,string,src/secrets/wifi-password.txt
