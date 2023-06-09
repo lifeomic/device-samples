@@ -144,9 +144,9 @@ void app_main(void)
         }
     }
 
-    // Open the "certs" namespace in read-only mode
+    // Open the "secrets" namespace in read-only mode
     nvs_handle handle;
-    ESP_ERROR_CHECK(nvs_open("certs", NVS_READONLY, &handle) != ESP_OK);
+    ESP_ERROR_CHECK(nvs_open("secrets", NVS_READONLY, &handle) != ESP_OK);
 
     // Load the private key & certificate
     ESP_LOGI(TAG, "Loading private key & certificate");
