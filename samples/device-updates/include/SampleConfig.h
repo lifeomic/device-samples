@@ -26,6 +26,7 @@ rqXRfboQnoZsG4q5WTP468SQvvG5
 )EOF";
 
 // TODO: Replace with your network credentials
+// (See the `samples/storage-encryption` for details on how to avoid storing sensitive data in the firmware.)
 const char WIFI_SSID[] = "";
 const char WIFI_PASSWORD[] = "";
 
