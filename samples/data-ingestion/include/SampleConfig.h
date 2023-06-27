@@ -1,6 +1,9 @@
-const char AWS_IOT_ENDPOINT[] = "data.iot.us.lifeomic.com";
-const char LO_FHIR_INGEST[] = "$aws/rules/FHIRIngest/";
-const char LO_FILE_UPLOAD[] = "$aws/rules/CreateFileUploadLink/";
+std::string LO_IOT_ENDPOINT = "data.iot.us.lifeomic.com";
+std::string AWS_RULES_TOPIC = "$aws/rules";
+std::string LO_FHIR_INGEST_TOPIC_NAME = "FHIRIngest";
+std::string LO_FILE_UPLOAD_TOPIC_NAME = "CreateFileUploadLink";
+std::string LO_FHIR_INGEST_RULES_TOPIC = AWS_RULES_TOPIC + "/" + LO_FHIR_INGEST_TOPIC_NAME;
+std::string LO_FILE_UPLOAD_RULES_TOPIC = AWS_RULES_TOPIC + "/" + LO_FILE_UPLOAD_TOPIC_NAME;
 
 // Amazon Root CA 1
 static const char AWS_CERT_CA[] PROGMEM = R"EOF(
@@ -35,14 +38,14 @@ const char LO_CODE_SYSTEM[] = "any-uuid";
 const char DEVICE_ID[] = "ACCOUNT:UUID";
 
 // Device Certificate
-static const char AWS_CERT_CRT[] PROGMEM = R"KEY(
+static const char LO_DEVICE_CERTIFICATE[] PROGMEM = R"KEY(
 -----BEGIN CERTIFICATE-----
 -----END CERTIFICATE-----
 
 )KEY";
 
 // Device Private Key
-static const char AWS_CERT_PRIVATE[] PROGMEM = R"KEY(
+static const char LO_DEVICE_PRIVATE_KEY[] PROGMEM = R"KEY(
 -----BEGIN RSA PRIVATE KEY-----
 -----END RSA PRIVATE KEY-----
 
