@@ -162,7 +162,7 @@ const run = async (args: Args) => {
 
 const main = async () => {
   const options: ParseArgsConfig["options"] = {
-    topic: { type: "string", default: "$aws/rules/CreateFileUploadLink/" },
+    topic: { type: "string", default: "$aws/rules/CreateFileUploadLink" },
     endpoint: { type: "string", default: DEFAULT_ENDPOINT },
     deviceName: { type: "string" },
     fileName: { type: "string" },

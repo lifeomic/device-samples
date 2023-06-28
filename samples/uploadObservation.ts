@@ -131,7 +131,7 @@ async function run(args: Args) {
 
 const main = async () => {
   const options: ParseArgsConfig["options"] = {
-    topic: { type: "string", default: "$aws/rules/FHIRIngest/" },
+    topic: { type: "string", default: "$aws/rules/FHIRIngest" },
     endpoint: { type: "string", default: DEFAULT_ENDPOINT },
     payloadValue: { type: "string" },
     deviceName: { type: "string" },
