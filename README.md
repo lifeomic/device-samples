@@ -85,7 +85,7 @@ An error response will be written to the topic `$aws/provisioning-templates/Defa
 
 ## Save a FHIR Observation
 
-In this script we can upload an observation from the device. We will need the device name that was output from the provisioning step. The MQTT topic to upload data to is `$aws/rules/FHIRIngest/`. You will need to know the FHIR code for the value you are uploading. In the example below we use our internal battery observation code.
+In this script we can upload an observation from the device. We will need the device name that was output from the provisioning step. The MQTT topic to upload data to is `$aws/rules/FHIRIngest`. You will need to know the FHIR code for the value you are uploading. In the example below we use our internal battery observation code.
 
 Run the save observation script with the following:
 
@@ -118,7 +118,7 @@ The payload being sent the payload:
 
 ## File Upload
 
-To save a file we will need to request and receive a signed URL. The MQTT topic to request a signed URL is `$aws/rules/CreateFileUploadLink/` and the response will be published to the topic that is the same as the device's name.
+To save a file we will need to request and receive a signed URL. The MQTT topic to request a signed URL is `$aws/rules/CreateFileUploadLink` and the response will be published to the topic that is the same as the device's name.
 
 ```bash
 yarn uploadFile \
