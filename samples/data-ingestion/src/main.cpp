@@ -23,7 +23,7 @@ void resetDisplay();
 void defaultDisplay();
 void setupWifi();
 void mqttConnect();
-void recordResult(String val, String code, String system, String display);
+void recordObservation(String val, String code, String system, String display);
 void updateDiagnostic(String val);
 void handleMessage(String &topic, String &payload);
 void startFileUpload();
@@ -128,7 +128,7 @@ void handleButton(Button btn)
     delay(500);
 
     String result = "success";
-    recordResult(result, LO_RESULT_CODE, LO_CODE_SYSTEM, "");
+    recordObservation(result, LO_RESULT_CODE, LO_CODE_SYSTEM, "");
     M5.Lcd.printf("%s: %s\n", btn.label(), result.c_str());
     updateDiagnostic("Btn=" + String(btn.label()) + ";result=" + result);
   }
@@ -144,7 +144,7 @@ void handleErrorButton(Button btn)
     String result = "fail";
     M5.Lcd.println("error detected. Uploading diagnostic log file");
     startFileUpload();
-    recordResult(result, LO_RESULT_CODE, LO_CODE_SYSTEM, "");
+    recordObservation(result, LO_RESULT_CODE, LO_CODE_SYSTEM, "");
     updateDiagnostic("Btn=" + String(btn.label()) + ";result=" + result);
   }
 }
@@ -157,7 +157,7 @@ void resetDisplay()
   }
 }
 
-void recordResult(String val, String code, String system, String display)
+void recordObservation(String val, String code, String system, String display)
 {
   int value = 0;
   if (val == "fail")
@@ -166,11 +166,12 @@ void recordResult(String val, String code, String system, String display)
   }
   StaticJsonDocument<200> doc;
   doc["value"] = value;
-  doc["unit"] = "number";
+  doc["unit"] = "status";
   StaticJsonDocument<200> codeObj;
   codeObj["code"] = code;
   codeObj["system"] = system;
-  codeObj["display"] = "btn_press_event"; // fn argument display variable results in null.
+  // fn argument display variable results in null.
+  codeObj["display"] = "btn_press_event";
   JsonArray coding = doc.createNestedArray("coding");
   coding.add(codeObj);
   char jsonBuffer[1024];
