@@ -20,7 +20,7 @@
     "mime-types": "^2.1.35",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.0",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@types/mime-types": "^2.1.1",
