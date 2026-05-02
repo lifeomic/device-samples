@@ -19,7 +19,7 @@
     "axios": "^1.15.0",
     "mime-types": "^2.1.35",
     "ts-node": "^10.9.1",
-    "uuid": "^9.0.0",
+    "uuid": "^14.0.0",
     "zod": "^3.22.3"
   },
   "devDependencies": {
